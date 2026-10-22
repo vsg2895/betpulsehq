@@ -198,14 +198,26 @@ export default async function HomePage({ searchParams }: Props) {
         {bonusSections.length > 0 && (
           <section className="px-5">
             <div className="mx-auto max-w-[1160px]">
-              {/* A white panel on the warm ground, which is what makes the row
-                  one control surface rather than a scatter of loose buttons
-                  left over from the hero. No wash and no glow: on this ground
-                  the panel separates by value alone, and the chips inside it
-                  are already bordered — a tint behind them would be a third
-                  edge in a block whose job is to stay quiet. */}
-              <div className="rounded-3xl border border-line bg-paper p-6">
-                <BonusCategoryNav sections={bonusSections} />
+              {/* A white panel on the warm ground, lit from two corners so the row
+                  reads as one surface rather than a scatter of loose buttons.
+                  The wash is this brand's terracotta and its navy accent, NOT
+                  the indigo/yellow the sibling site uses — the structure is
+                  shared, the colour never is */}
+              <div className="relative overflow-hidden rounded-3xl border border-line bg-paper p-6 shadow-[0_18px_40px_-30px_rgba(26,29,51,0.35)]">
+                {/* Decoration only. No -z-10: the panel paints its own
+                    background, and a layer sent behind it would never be seen.
+                    `overflow-hidden` on the panel is what keeps these discs
+                    inside the rounded corners instead of bleeding past them. */}
+                <div aria-hidden className="pointer-events-none absolute inset-0">
+                  <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(184,83,42,0.08),transparent_62%)]" />
+                  <div className="absolute -left-24 -top-28 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(184,83,42,0.14),transparent_70%)] blur-2xl" />
+                  <div className="absolute -right-20 -bottom-28 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(26,29,51,0.10),transparent_70%)] blur-2xl" />
+                </div>
+
+                {/* `relative` so the content sits above the decoration. */}
+                <div className="relative">
+                  <BonusCategoryNav sections={bonusSections} />
+                </div>
               </div>
             </div>
           </section>
