@@ -61,11 +61,28 @@ export default function OfferBanner({
 }) {
   return (
     <>
-      {/* A CSS background rather than an <Image>: it is decoration, it is the
-          same on every card, and a gradient costs nothing to fetch or decode. */}
+      {/* ONE BACKDROP FOR EVERY BONUS, from `/bonus-backdrop.webp` — the same
+          file the eight older sites use, so a bonus card reads the same across
+          the network.
+
+          This replaced a per-site gradient. The gradient was consistent too,
+          but it left the letterbox bands either side of a contained banner as
+          flat colour, and a grid of cards then read as a column of coloured
+          boxes with pictures floating in them. The patterned ground gives the
+          bands something to be, which turns the backdrop into the FRAME — the
+          part that stays put — and leaves the artwork as the only thing that
+          differs from card to card.
+
+          A CSS background rather than a second <Image>: it is decoration, the
+          same few KB on every card, and the browser fetches and decodes it once
+          for the whole page instead of once per bonus.
+
+          CARDS ONLY. The single-bonus page shows its banner on a plain ground —
+          there is no set for it to belong to there, and the pattern would
+          compete with the one piece of artwork that page exists to show. */}
       <span
         aria-hidden
-        className="absolute inset-0 bg-ink bg-[radial-gradient(70%_100%_at_50%_0%,rgba(184,83,42,0.45),transparent_70%)]"
+        className="absolute inset-0 bg-[url('/bonus-backdrop.webp')] bg-cover bg-center"
       />
       {src ? (
         <Image
