@@ -10,19 +10,12 @@ import Image from 'next/image'
  * figure on it. `object-contain` keeps the artwork intact, at the cost of
  * letterbox bands.
  *
- * ONE BACKDROP FOR EVERY BONUS, and on this site it is a GRADIENT rather than
- * an image. The bands were briefly filled with a blurred copy of each bonus's
- * own artwork, which made every card a different colour and a grid of them read
- * as a jumble; a single ground behind all of them turns the backdrop into the
- * frame — the part that stays put — and leaves the artwork as the only thing
- * that differs from card to card.
- *
- * The siblings ship that ground as a .webp in `public/`. Here it is built from
- * the theme tokens instead, for two reasons: it costs no request and no bytes,
- * and it cannot fall out of step with the palette — a hand-made image would
- * have to be re-cut by hand the next time a colour moves. It is the same ink
- * ground the detail-page banner uses, so a bonus's artwork sits on the same
- * colour on the card it is listed in and on the page it opens.
+ * ONE BACKDROP FOR EVERY BONUS: the site's own `/bonus-backdrop.webp`. The
+ * bands were briefly filled with a blurred copy of each bonus's own artwork,
+ * which made every card a different colour and a grid of them read as a
+ * jumble; a single ground behind all of them turns the backdrop into the
+ * frame and leaves the artwork as the only thing that differs from card to
+ * card. Why an image and not a gradient: see the comment on the backdrop below.
  *
  * Rendered even when a bonus has no artwork at all — and in that case
  * `fallbackText` is set on the ground instead, so the card carries the OFFER
