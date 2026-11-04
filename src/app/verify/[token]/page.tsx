@@ -9,12 +9,20 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Email verified',
   robots: { index: false, follow: false },
+  // Cleared, not inherited: the layout's defaults are the HOMEPAGE's canonical,
+  // og:url and share card. A per-subscriber token URL has none of those.
+  alternates: { canonical: null },
+  openGraph: null,
+  twitter: null,
 }
 
-/**
- * Accent panel for this page — THIS site's brand colour, not a shared default.
+/*
+ * Colours come from THIS site's tokens, not a hex constant. This page carried
+ * `#c91f58` — partnerplaypro's crimson, copied in with the shared page and
+ * neither this site's brand nor anything in its palette. The panel is
+ * `brand-dark` with `brand-ink` (white) on it — the darker of the two
+ * brand tokens, so the small `/80` subtitle still clears 4.5:1.
  */
-const ACCENT = '#c91f58'
 const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME ?? 'our newsletter'
 
 // Focus ring shared by both links, so the page stays keyboard-navigable, and
@@ -36,9 +44,9 @@ export default async function VerifyPage({ params }: Props) {
   return (
     <main className="flex min-h-[70vh] items-center justify-center px-4 py-16">
       <div className="w-full max-w-md overflow-hidden rounded-2xl border border-line bg-paper shadow-sm">
-        <div className="px-8 py-7 text-white" style={{ backgroundColor: ACCENT }}>
+        <div className="bg-brand-dark px-8 py-7 text-brand-ink">
           {ok && bonusEmailExpected && (
-            <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
+            <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-brand-ink/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-brand-ink">
               <span aria-hidden="true">✓</span> Email verified
             </p>
           )}
@@ -49,7 +57,7 @@ export default async function VerifyPage({ params }: Props) {
                 ? 'Your bonus is on its way'
                 : '🎉 You’re all set!'}
           </h1>
-          <p className="mt-1 text-sm text-white/80">{SITE_NAME}</p>
+          <p className="mt-1 text-sm text-brand-ink/80">{SITE_NAME}</p>
         </div>
 
         <div className="px-8 py-7">
@@ -96,8 +104,7 @@ export default async function VerifyPage({ params }: Props) {
 
           <Link
             href="/"
-            className={`mt-6 inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 motion-reduce:transition-none ${FOCUS}`}
-            style={{ backgroundColor: ACCENT }}
+            className={`mt-6 inline-flex min-h-11 items-center justify-center rounded-full bg-brand px-5 py-2 text-sm font-bold text-brand-ink transition-colors hover:bg-brand-dark motion-reduce:transition-none ${FOCUS}`}
           >
             Explore {SITE_NAME}
           </Link>
