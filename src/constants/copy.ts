@@ -52,6 +52,9 @@ export const COPY = {
     allOffers: 'All Offers',
   },
   home: {
+    bonus: 'Bonuses',
+    seeMore: 'See more',
+    seeAllBonuses: 'See All Bonuses',
     /**
      * The VISIBLE heading over the bonus-type row.
      *
