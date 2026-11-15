@@ -21,8 +21,8 @@ export default function Pagination({ basePath, current, last }: { basePath: stri
    * put there, so one cannot be appended twice.
    */
   const link = (p: number) => pageHref(basePath, p)
-  const base = 'inline-flex h-11 min-w-11 items-center justify-center rounded-xl px-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
-  const idle = 'border border-line bg-paper text-ink hover:border-ink'
+  const base = 'inline-flex h-11 min-w-11 items-center justify-center rounded-[10px] px-3 font-mono text-sm font-bold transition-colors focus-visible:outline-3 focus-visible:outline-offset-2'
+  const idle = 'border-[1.5px] border-line-soft bg-paper text-ink hover:border-ink'
 
   return (
     <nav className="mt-10 flex items-center justify-center gap-1.5" aria-label="Pagination">
@@ -34,7 +34,7 @@ export default function Pagination({ basePath, current, last }: { basePath: stri
           key={p}
           href={link(p)}
           aria-current={p === current ? 'page' : undefined}
-          className={`${base} ${p === current ? 'border border-accent bg-accent text-accent-ink' : idle}`}
+          className={`${base} ${p === current ? 'border-[1.5px] border-navy bg-navy text-white' : idle}`}
         >
           {p}
         </Link>

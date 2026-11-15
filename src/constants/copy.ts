@@ -95,24 +95,43 @@ export const COPY = {
     methodSubtitle: 'Every casino on this list goes through the same three checks, in the same order.',
     methodSteps: [
       {
-        kicker: '01 — Read',
+        no: '01',
+        verb: 'Read',
         title: 'Terms, in full',
         body:
           'The wagering multiplier and what it applies to, the minimum deposit, the withdrawal cap and the expiry — taken from the operator’s own terms page rather than from the promo banner.',
       },
       {
-        kicker: '02 — Rank',
+        no: '02',
+        verb: 'Rank',
         title: 'Placed against the rest',
         body:
           'An operator is ordered against the others in its category on what those terms actually cost a player, not on how loudly the headline figure is advertised.',
       },
       {
-        kicker: '03 — Re-check',
+        no: '03',
+        verb: 'Re-check',
         title: 'Read again, later',
         body:
           'Terms change quietly. Offers that have lapsed come off the list, revised ones are re-read, and a casino moves when its reading moves.',
       },
     ],
+    methodLabel: 'Method',
+    // Under the three stages: the cycle closes back on the first.
+    methodLoop: 'Then back to 01 — the cycle repeats',
+    // ── The hero monitor: what one pass re-reads ─────────────────────────
+    // The same three things the FAQ and the method name — no figure this
+    // site does not hold.
+    monitorTitle: 'What each pass re-reads',
+    monitorStatus: 'On a cycle',
+    monitorReads: [
+      { label: '01 · Bonus terms', text: 'Wagering, min deposit, cap, expiry' },
+      { label: '02 · Payout', text: 'Withdrawal conditions and methods' },
+      { label: '03 · Support', text: 'Whether support cover holds up' },
+    ],
+    monitorNote: 'A casino moves when its reading moves. Lapsed offers come off the list.',
+    rankingLabel: 'This cycle',
+    faqLabel: 'FAQ',
   },
   casinos: {
     pageTitle: 'Every Casino We Track',
@@ -124,6 +143,7 @@ export const COPY = {
     offersHeading: 'Bonuses At This Casino',
     // Tail of the summary-panel H2: `{casino.name} at a glance`.
     glanceHeadingTail: 'at a glance',
+    moreHeading: 'More top casinos this cycle',
     reviewTitleTail: 'Current Reading',
     reviewSignature: 'Bonus terms read in full, and re-read on a cycle.',
     reviewSummary: 'with its bonus terms read in full and its placement re-checked on a cycle.',

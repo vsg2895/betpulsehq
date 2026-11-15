@@ -6,10 +6,12 @@ import type { BonusSection } from '@/lib/api'
 import { buildItemListSchema, buildWebPageSchema, jsonLdScript, buildFaqSchema, SHARE_IMAGES } from '@/lib/seo'
 import { COPY } from '@/constants/copy'
 import { FAQ_ITEMS } from '@/constants/faq'
-import CasinoCard from '@/components/CasinoCard'
+import CasinoCard, { CASINO_LIST } from '@/components/CasinoCard'
 import BonusCategoryNav from '@/components/BonusCategoryNav'
+import BonusGroups from '@/components/BonusGroups'
 import CategoryNav from '@/components/CategoryNav'
-import SpecialOfferCard from '@/components/SpecialOfferCard'
+import FaqAccordion from '@/components/FaqAccordion'
+import SpecialOfferCard, { OFFER_GRID } from '@/components/SpecialOfferCard'
 import type { Category } from '@shared/types/category'
 import type { CasinoWithAttachment } from '@shared/types/casino'
 import type { SpecialOffer } from '@shared/types/specialOffer'
@@ -129,108 +131,74 @@ export default async function HomePage({ searchParams }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(graph) }} />
 
       <main>
-        {/* Hero.
-
-            Centred, with the headline on a measure of its own: at 84px a line
-            that crosses the full 1,160px loses the reader between its ends, so
-            the column is capped and centred inside the section instead.
-
-            The ECG trace runs behind it at 12% — the brand's own mark, used as
-            texture. It is clipped by the section's `overflow-hidden` and hidden
-            from assistive tech: it carries no information. */}
-        <section className="hero-wash relative overflow-hidden">
-          {/* HIDDEN ON PHONES. The hero is much taller there (the headline
-              wraps to three lines and the lead to five), so a trace centred on
-              the section lands squarely across the body copy instead of behind
-              the headline — decoration reducing the legibility of the one
-              paragraph that explains the site. It returns at sm, where the
-              hero is short enough that it sits where it was drawn to sit. */}
-          <div
-            aria-hidden
-            className="pulse-trace pointer-events-none absolute inset-x-0 top-1/2 hidden h-[120px] -translate-y-1/2 opacity-[0.12] sm:block"
-          />
-
-          <div className="relative mx-auto max-w-[1160px] px-5 pb-8 pt-8 text-center sm:pb-14 sm:pt-[72px] lg:pb-[56px]">
-            <div className="mx-auto max-w-[960px]">
-              {/* The eyebrow, with the heartbeat. One piece of motion on the
-                  site, and `prefers-reduced-motion` stops it — see
-                  globals.css. */}
-              <p className="inline-flex items-center gap-2.5 rounded-full border border-line bg-paper px-3.5 py-1.5 text-[11px] font-bold uppercase sm:px-[18px] sm:py-2 sm:text-[12.5px] tracking-[0.18em] text-ink-soft">
-                <span
-                  className="pulse-dot h-2 w-2 shrink-0 rounded-full bg-brand"
-                  aria-hidden
-                />
+        {/* Hero — the claim and the two ways in on the left, the monitor on
+            the right: what each pass re-reads, under a live ECG trace. */}
+        <section>
+          <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-10 px-4 pb-12 pt-12 min-[61.25rem]:grid-cols-2 min-[61.25rem]:pb-14 min-[61.25rem]:pt-16">
+            <div>
+              <p className="live inline-flex items-center gap-2 rounded-full border border-line bg-paper px-3 py-[7px] font-mono text-xs font-bold uppercase tracking-[0.08em] text-ink-soft">
                 {COPY.home.heroEyebrow}
               </p>
-
-              <h1 className="font-display mx-auto mb-3 mt-4 text-[30px] sm:mb-[22px] sm:mt-[26px] font-extrabold leading-[1.08] text-balance text-ink sm:text-[62px] lg:text-[84px]">
-                {COPY.home.heroHeadline}{' '}
-                {/* The highlight sits on a pale terracotta underline rather
-                    than being a block of colour: the mockup's `em::after`. The
-                    bar is a child with a negative z-index against a
-                    `relative`, `isolate`d span, so it paints behind the glyphs
-                    without escaping into the section's own stacking context
-                    and landing under the hero wash. */}
-                <span className="relative isolate whitespace-nowrap text-brand">
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-0 bottom-[0.04em] -z-10 h-[0.12em] rounded bg-brand-tint"
-                  />
-                  {COPY.home.heroHighlight}
-                </span>
+              <h1 className="mt-[22px] font-display text-[42px] font-bold leading-none text-balance text-ink sm:text-[clamp(42px,6vw,78px)]">
+                {COPY.home.heroHeadline} <em className="not-italic text-brand">{COPY.home.heroHighlight}</em>
               </h1>
-
-              <p className="mx-auto mb-5 max-w-[640px] text-pretty text-[15px] sm:mb-[34px] sm:text-[17px] leading-relaxed text-ink-soft lg:text-[20px]">
-                {COPY.home.heroSubtitle}
-              </p>
-
-              <div className="flex flex-col justify-center gap-2.5 sm:gap-3.5 sm:flex-row">
-                <Link
-                  href="/casinos"
-                  className="inline-flex min-h-[3.25rem] w-full sm:w-auto whitespace-nowrap items-center sm:min-h-[52px] sm:flex-none justify-center rounded-xl bg-brand px-6 py-3.5 text-base sm:px-[26px] sm:py-4 sm:text-[15.5px] font-bold text-brand-ink shadow-[0_6px_18px_-8px_rgba(184,83,42,0.7)] transition-all hover:-translate-y-px hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent motion-reduce:transition-none motion-reduce:hover:translate-y-0"
-                >
+              <p className="mt-[22px] max-w-[540px] text-lg text-ink-soft">{COPY.home.heroSubtitle}</p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Link href="/casinos" className="btn-or min-h-12 px-[22px] text-[15px]">
                   {COPY.home.featuredCasinos}
                 </Link>
                 {anyOffersVisible && (
-                  <Link
-                    href="/special-offers"
-                    className="inline-flex min-h-[3.25rem] w-full sm:w-auto whitespace-nowrap items-center sm:min-h-[52px] sm:flex-none justify-center rounded-xl border border-line bg-paper px-6 py-[13px] text-base sm:px-[26px] sm:py-4 sm:text-[15.5px] font-bold text-ink transition-all hover:-translate-y-px hover:border-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent motion-reduce:transition-none motion-reduce:hover:translate-y-0"
-                  >
+                  <Link href="/special-offers" className="btn-ln min-h-12 px-[22px] text-[15px]">
                     {COPY.home.specialOffers}
                   </Link>
                 )}
               </div>
             </div>
+
+            <aside aria-labelledby="monitor-heading" className="rounded-[22px] bg-navy p-4 text-white shadow-[0_30px_60px_-28px_rgba(26,29,51,0.55)] sm:p-5">
+              <div className="flex flex-wrap items-center justify-between gap-2.5 font-mono text-xs font-bold uppercase tracking-[0.06em] text-night-ink">
+                <h2 id="monitor-heading">{COPY.home.monitorTitle}</h2>
+                <span className="live inline-flex items-center gap-2">{COPY.home.monitorStatus}</span>
+              </div>
+              <div aria-hidden className="ecg-grid mt-3 overflow-hidden rounded-[14px] border border-night-line">
+                <svg viewBox="0 0 600 150" className="block h-auto w-full">
+                  <path className="ecg-trace" d="M0 85H90l12-22 12 22h40l10-62 14 108 12-46h70l12-20 12 20h50l10-62 14 108 12-46h70l12-20 12 20H600" />
+                </svg>
+              </div>
+              <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-3" role="list">
+                {COPY.home.monitorReads.map((read) => (
+                  <li key={read.label} className="rounded-xl border border-night-line bg-navy-2 p-3">
+                    <p className="font-mono text-[11px] font-bold uppercase tracking-[0.08em] text-night-ink">{read.label}</p>
+                    <p className="mt-1.5 text-sm font-semibold leading-[1.3]">{read.text}</p>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-3 text-[13px] text-night-ink">{COPY.home.monitorNote}</p>
+            </aside>
           </div>
         </section>
 
-        {/* Casinos by category */}
-        <section className="px-5 pt-8 sm:pt-[72px]" aria-labelledby="top-casinos-heading">
-          <div className="mx-auto max-w-[1160px]">
-            <div className="mb-4 flex items-end justify-between gap-4 sm:mb-6">
-              <div>
-                <h2
-                  id="top-casinos-heading"
-                  className="font-display text-[24px] font-extrabold leading-[1.08] text-ink sm:text-[38px] lg:text-[46px]"
-                >
-                  {COPY.home.topCasinosTitle}
-                </h2>
-                <p className="mt-1 text-[15px] text-ink-soft sm:mt-2 sm:text-[17px]">{COPY.home.topCasinosSubtitle}</p>
-              </div>
-            </div>
+        {/* The ranking — category chips, then the casinos as rows. */}
+        <section className="pb-14 pt-6 sm:pb-[72px]" aria-labelledby="top-casinos-heading">
+          <div className="mx-auto max-w-[1200px] px-4">
+            <p className="live inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.1em] text-brand-dark">{COPY.home.rankingLabel}</p>
+            <h2 id="top-casinos-heading" className="mt-2.5 font-display text-[30px] font-bold leading-[1.02] text-ink sm:text-[clamp(30px,4.2vw,52px)]">
+              {COPY.home.topCasinosTitle}
+            </h2>
+            <p className="mt-3 max-w-[540px] text-ink-soft">{COPY.home.topCasinosSubtitle}</p>
 
             {categories.length > 0 && selected && (
-              <div className="mb-5 sm:mb-6">
+              <div className="mt-6">
                 <CategoryNav categories={categories} selected={selected} />
               </div>
             )}
 
             {casinos.length === 0 ? (
-              <p className="rounded-[18px] border border-dashed border-line bg-paper p-10 text-center text-muted">
+              <p className="mt-6 rounded-[18px] border border-dashed border-line bg-paper p-10 text-center text-muted">
                 {COPY.casinos.noResults}
               </p>
             ) : (
-              <ol className="flex flex-col gap-3.5">
+              <ol className={`mt-[22px] ${CASINO_LIST}`}>
                 {casinos.map((casino, i) => (
                   <CasinoCard key={casino.id} casino={casino} rank={i + 1} />
                 ))}
@@ -238,204 +206,101 @@ export default async function HomePage({ searchParams }: Props) {
             )}
 
             {activeCategory && hasMoreCasinos && (
-              <div className="mt-9 text-center">
-                <Link
-                  href={`/categories/${selected}`}
-                  aria-label={`See all ${casinosHeading(activeCategory.name)}`}
-                  className="inline-flex min-h-[46px] items-center rounded-full border border-line bg-paper px-7 py-3 text-[15px] font-semibold text-ink transition-colors hover:border-ink"
-                >
-                  See More <span aria-hidden className="ml-1.5">→</span>
+              <div className="mt-6 flex justify-center">
+                <Link href={`/categories/${selected}`} className="btn-ln min-h-12 px-[22px] text-[15px]">
+                  See more casinos<span className="sr-only"> — {casinosHeading(activeCategory.name)}</span> <span aria-hidden>→</span>
                 </Link>
               </div>
             )}
           </div>
         </section>
 
-        {/* Bonus types — directly under the casino list.
-
-            The casinos are what visitors came for, so they come first under
-            the hero; the bonus-type chips follow as the next way in.
-
-            Renders nothing when the site does not publish the Bonus area, so
-            the band collapses rather than leaving a gap. */}
+        {/* Bonus types as one stacked bar. Renders nothing without a Bonus area. */}
         {bonusSections.length > 0 && (
-          <section className="px-5 pt-10 sm:pt-14">
-            <div className="mx-auto max-w-[1160px]">
-              {/* A white panel on the warm ground, lit from two corners so the row
-                  reads as one surface rather than a scatter of loose buttons.
-                  The wash is this brand's terracotta and its navy accent, NOT
-                  the indigo/yellow the sibling site uses — the structure is
-                  shared, the colour never is */}
-              <div className="relative overflow-hidden rounded-3xl border border-line bg-paper p-6 shadow-[0_18px_40px_-30px_rgba(26,29,51,0.35)]">
-                {/* Decoration only. No -z-10: the panel paints its own
-                    background, and a layer sent behind it would never be seen.
-                    `overflow-hidden` on the panel is what keeps these discs
-                    inside the rounded corners instead of bleeding past them. */}
-                <div aria-hidden className="pointer-events-none absolute inset-0">
-                  <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(184,83,42,0.08),transparent_62%)]" />
-                  <div className="absolute -left-24 -top-28 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(184,83,42,0.14),transparent_70%)] blur-2xl" />
-                  <div className="absolute -right-20 -bottom-28 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(26,29,51,0.10),transparent_70%)] blur-2xl" />
-                </div>
-
-                {/* `relative` so the content sits above the decoration. */}
-                <div className="relative">
-                  <BonusCategoryNav sections={bonusSections} />
-                </div>
-              </div>
+          <section className="pb-14 sm:pb-[72px]">
+            <div className="mx-auto max-w-[1200px] px-4">
+              <BonusCategoryNav sections={bonusSections} />
             </div>
           </section>
         )}
 
-        {/* How the pulse works — the method, in the order it happens.
-
-            Numbered because these three ARE a sequence: each step runs on the
-            output of the one before it. A numbered set that is not ordered is
-            decoration; this one is information, which is the test the markers
-            have to pass to earn their place. */}
-        <section className="px-5 pt-[72px]" aria-labelledby="method-heading">
-          <div className="mx-auto max-w-[1160px]">
-            <div className="mb-6">
-              <h2
-                id="method-heading"
-                className="font-display text-[30px] font-extrabold leading-[1.08] text-ink sm:text-[38px] lg:text-[46px]"
-              >
-                {COPY.home.methodTitle}
-              </h2>
-              <p className="mt-2 text-[17px] text-ink-soft">{COPY.home.methodSubtitle}</p>
-            </div>
-            <ol className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+        {/* How the pulse works — Read → Rank → Re-check, drawn as a cycle that
+            closes back on the first stage. */}
+        <section className="border-y border-line bg-surface py-14 sm:py-[72px]" aria-labelledby="method-heading">
+          <div className="mx-auto max-w-[1200px] px-4">
+            <p className="font-mono text-xs font-bold uppercase tracking-[0.1em] text-brand-dark">{COPY.home.methodLabel}</p>
+            <h2 id="method-heading" className="mt-2.5 font-display text-[30px] font-bold leading-[1.02] text-ink sm:text-[clamp(30px,4.2vw,52px)]">
+              {COPY.home.methodTitle}
+            </h2>
+            <p className="mt-3 max-w-[540px] text-ink-soft">{COPY.home.methodSubtitle}</p>
+            <ol className="mt-[34px] grid grid-cols-1 gap-7 min-[61.25rem]:grid-cols-3 min-[61.25rem]:gap-10">
               {COPY.home.methodSteps.map((step) => (
-                <li
-                  key={step.kicker}
-                  className="rounded-[18px] border border-line bg-paper p-[26px]"
-                >
-                  <p className="font-display text-[15px] font-extrabold tracking-[0.08em] text-brand">
-                    {step.kicker}
+                <li key={step.no} className="cy relative rounded-[20px] border-[1.5px] border-line bg-paper p-6">
+                  <p className="inline-flex items-center gap-2.5 font-mono text-[13px] font-bold uppercase text-brand-dark">
+                    <span aria-hidden className="flex h-10 w-10 items-center justify-center rounded-full bg-brand text-[15px] text-white">{step.no}</span>
+                    {step.verb}
                   </p>
-                  <h3 className="font-display mb-2 mt-2.5 text-[22px] font-bold text-ink">
-                    {step.title}
-                  </h3>
-                  <p className="text-[15.5px] leading-relaxed text-ink-soft">{step.body}</p>
+                  <h3 className="mt-3.5 font-display text-[22px] font-bold text-ink">{step.title}</h3>
+                  <p className="mt-2.5 text-[15px] text-ink-soft">{step.body}</p>
                 </li>
               ))}
             </ol>
+            <p className="mt-4 flex items-center gap-3 text-sm font-semibold text-ink-soft">
+              <svg aria-hidden width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+                <path d="M3 12a9 9 0 0 1 15.5-6.2L21 8M21 3v5h-5M21 12a9 9 0 0 1-15.5 6.2L3 16M3 21v-5h5" />
+              </svg>
+              <span>{COPY.home.methodLoop}</span>
+              <span aria-hidden className="loop-line h-0.5 flex-1" />
+            </p>
           </div>
         </section>
 
-        {/* Bonuses — one heading, then a block per bonus type, like winpalack.
-            Built from the same getBonusArea payload as the chips and the
-            header/footer Bonuses menus, so no block links to a type the menu
-            lacks. A site without the Bonus area keeps the flat grid below. */}
+        {/* Bonuses — one card per type, built from the same getBonusArea
+            payload as the mix bar and the menus. A site without the Bonus
+            area keeps the flat grid below. */}
         {bonusSections.length > 0 ? (
-          <section className="px-5 pt-[72px]" aria-labelledby="bonus-heading">
-            <div className="mx-auto max-w-[1160px]">
-              <div className="mb-6 flex items-end justify-between gap-4">
-                <h2
-                  id="bonus-heading"
-                  className="font-display text-[30px] font-extrabold leading-[1.08] text-ink sm:text-[38px] lg:text-[46px]"
-                >
+          <section className="py-14 sm:py-[72px]" aria-labelledby="bonus-heading">
+            <div className="mx-auto max-w-[1200px] px-4">
+              <div className="flex flex-wrap items-end justify-between gap-4">
+                <h2 id="bonus-heading" className="font-display text-[30px] font-bold leading-[1.02] text-ink sm:text-[clamp(30px,4.2vw,52px)]">
                   {COPY.home.bonus}
                 </h2>
-                <Link
-                  href="/special-offers"
-                  className="hidden shrink-0 items-center gap-1.5 whitespace-nowrap py-3 -my-3 text-[15px] font-bold text-brand transition-colors hover:text-brand-dark sm:inline-flex"
-                >
-                  {COPY.home.viewAll} <span aria-hidden>→</span>
+                <Link href="/special-offers" className="-my-3 inline-flex min-h-11 items-center py-3 font-bold text-brand-dark transition-colors hover:text-ink">
+                  {COPY.home.viewAll}<span className="sr-only"> bonuses</span> <span aria-hidden className="ml-1">→</span>
                 </Link>
               </div>
-              <div className="space-y-12">
-                {bonusSections.map((section) => (
-                  /* id: /#bonus-<slug> anchors, as on winpalack; scroll-mt clears the sticky header. */
-                  <div key={section.id} id={`bonus-${section.slug}`} className="scroll-mt-24">
-                    <div className="mb-5">
-                      <h3 className="font-display text-xl font-bold text-ink sm:text-2xl">
-                        <Link href={`/bonuses/${section.slug}`} className="transition-colors hover:text-brand-dark">
-                          {section.name}
-                        </Link>
-                      </h3>
-                      {section.description && <p className="mt-1 text-ink-soft">{section.description}</p>}
-                    </div>
-                    <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
-                      {section.offers.map((offer) => <SpecialOfferCard key={offer.id} offer={offer} />)}
-                    </div>
-                    <div className="mt-5">
-                      <Link href={`/bonuses/${section.slug}`} aria-label={`${COPY.home.seeMore} — ${section.name}`} className="inline-flex min-h-[46px] items-center rounded-full border border-line bg-paper px-7 py-3 text-[15px] font-semibold text-ink transition-colors hover:border-ink">
-                        {COPY.home.seeMore} →
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-9 text-center">
-                <Link href="/special-offers" aria-label={COPY.home.seeAllBonuses} className="inline-flex min-h-[46px] items-center rounded-full border border-line bg-paper px-7 py-3 text-[15px] font-semibold text-ink transition-colors hover:border-ink">
-                  {COPY.home.seeAllBonuses} →
-                </Link>
-              </div>
+              <BonusGroups sections={bonusSections} />
             </div>
           </section>
         ) : topOffers.length > 0 && (
-          <section className="px-5 pt-[72px]" aria-labelledby="offers-heading">
-            <div className="mx-auto max-w-[1160px]">
-              <div className="mb-6 flex items-end justify-between gap-4">
-                <h2
-                  id="offers-heading"
-                  className="font-display text-[30px] font-extrabold leading-[1.08] text-ink sm:text-[38px] lg:text-[46px]"
-                >
+          <section className="py-14 sm:py-[72px]" aria-labelledby="offers-heading">
+            <div className="mx-auto max-w-[1200px] px-4">
+              <div className="flex flex-wrap items-end justify-between gap-4">
+                <h2 id="offers-heading" className="font-display text-[30px] font-bold leading-[1.02] text-ink sm:text-[clamp(30px,4.2vw,52px)]">
                   {COPY.home.specialOffers}
                 </h2>
-                <Link
-                  href="/special-offers"
-                  className="hidden shrink-0 items-center gap-1.5 whitespace-nowrap py-3 -my-3 text-[15px] font-bold text-brand transition-colors hover:text-brand-dark sm:inline-flex"
-                >
-                  {COPY.home.viewAll} <span aria-hidden>→</span>
+                <Link href="/special-offers" className="-my-3 inline-flex min-h-11 items-center py-3 font-bold text-brand-dark transition-colors hover:text-ink">
+                  {COPY.home.viewAll}<span className="sr-only"> special offers</span> <span aria-hidden className="ml-1">→</span>
                 </Link>
               </div>
-              <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+              <div className={`mt-6 ${OFFER_GRID}`}>
                 {topOffers.map((offer) => (
                   <SpecialOfferCard key={offer.id} offer={offer} />
                 ))}
               </div>
-
-              <div className="mt-9 text-center">
-                <Link
-                  href="/special-offers"
-                  aria-label="See all special offers"
-                  className="inline-flex min-h-[46px] items-center rounded-full border border-line bg-paper px-7 py-3 text-[15px] font-semibold text-ink transition-colors hover:border-ink"
-                >
-                  See More <span aria-hidden className="ml-1.5">→</span>
-                </Link>
-              </div>
             </div>
           </section>
         )}
 
-        {/* FAQ — rendered visibly because FAQPage structured data requires it.
-
-            A two-column grid, not three: these answers run to three or four
-            lines each, and a third column cuts the measure to the point where
-            every card becomes a paragraph of six short lines. */}
-        <section className="px-5 pb-4 pt-[72px]" aria-labelledby="faq-heading">
-          <div className="mx-auto max-w-[1160px]">
-            <h2
-              id="faq-heading"
-              className="font-display text-[30px] font-extrabold leading-[1.08] text-ink sm:text-[38px] lg:text-[46px]"
-            >
+        {/* FAQ — numbered accordion. Every answer is in the HTML, which the
+            FAQPage schema above requires. */}
+        <section className={bonusSections.length > 0 || topOffers.length > 0 ? '' : 'pt-14 sm:pt-[72px]'} aria-labelledby="faq-heading">
+          <div className="mx-auto max-w-[1200px] px-4">
+            <p className="font-mono text-xs font-bold uppercase tracking-[0.1em] text-brand-dark">{COPY.home.faqLabel}</p>
+            <h2 id="faq-heading" className="mt-2.5 font-display text-[30px] font-bold leading-[1.02] text-ink sm:text-[clamp(30px,4.2vw,52px)]">
               {COPY.home.faqTitle}
             </h2>
-            <dl className="mt-6 grid gap-3.5 lg:grid-cols-2">
-              {FAQ_ITEMS.map((item) => (
-                <div
-                  key={item.question}
-                  className="rounded-[18px] border border-line bg-paper p-[26px]"
-                >
-                  <dt className="font-display text-[19px] font-bold text-ink">{item.question}</dt>
-                  <dd className="mt-2.5 text-[15.5px] leading-relaxed text-ink-soft">
-                    {item.answer}
-                  </dd>
-                </div>
-              ))}
-            </dl>
+            <FaqAccordion items={FAQ_ITEMS} />
           </div>
         </section>
       </main>

@@ -1,20 +1,18 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-/* BetPulseHQ — warm paper ground, ink-navy structure, terracotta primary.
-   Palette and type lifted from sites/betpulsehq.html.
-   Fonts: Instrument Sans (body) + Bricolage Grotesque (display).
+/* BetPulseHQ — "vital signs", from sites/betpulsehq-redesign.html: a warm
+   paper page with navy monitor panels, the ECG pulse line as the recurring
+   motif, the Read → Rank → Re-check cycle drawn as a loop, and the bonus mix
+   as one stacked bar.
+   Fonts: Instrument Sans (body), Space Grotesk (display), JetBrains Mono
+   (labels and figures).
 
    TOKEN NAMES are identical to the sibling sites (cream/paper/ink/brand/…) so
-   every shared component works here unchanged — only the values differ. That is
-   what makes a site a re-theme rather than a rewrite: nothing in the component
-   tree asks which domain it is rendering for.
-
-   THIS SITE IS LIGHT, and it is the first one that is: the siblings run dark
-   grounds with light `ink`. Every value below is therefore inverted relative to
-   them, and the inversion has to be total — a single token left at a dark value
-   lands dark text on a dark panel. The two places that bit during the port are
-   called out where they are defined. */
+   every shared component works here unchanged — only the values differ.
+   THIS SITE IS LIGHT: `cream` is the page, `paper` the white card on it,
+   `surface` the deeper paper band. The navy monitor panels and the footer use
+   the `navy` / `night-*` ramp. */
 :root {
   --background: #f5f2ec;
   --foreground: #1a1d33;
@@ -24,87 +22,57 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  /* `cream` is the BASE page surface, `paper` the raised panel above it, and
-     `surface` a third step for tiles inside a panel. Here the ladder runs
-     LIGHTER as it rises (warm paper → white), the opposite of the dark
-     siblings, where a raised panel is lighter than the ground for the same
-     reason: a card has to separate from what is behind it. */
+  /* The mockup's --paper / --card / --paper2. */
   --color-cream: #f5f2ec;
   --color-paper: #ffffff;
-  --color-surface: #efeae2;
+  --color-surface: #ede8df;
 
-  /* Ink navy, not black. It is the structural colour of the whole site — type,
-     the footer ground, the active filter, the icon tiles — and a true black
-     beside this warm ground reads as a hole rather than as ink. */
   --color-ink: #1a1d33;
-  --color-ink-soft: #4a4e66;
-  --color-muted: #7d7f90;
-  --color-faint: #9a9bab;
+  --color-ink-soft: #4e5266;
+  /* A step darker than the mockup's #767A8C: that grey is under 4.5:1 on the
+     paper ground, and it carries real small text (labels, counts, dates). */
+  --color-muted: #686c7e;
+  --color-faint: #767a8c;
 
-  /* Terracotta primary. `brand-ink` is the text colour that goes ON it —
-     white, which clears 4.5:1 against #b8532a. */
+  /* Terracotta. The mockup's #C2552B carries white text at 4.5:1 only just,
+     and as small orange text on the paper ground it falls under 4.5:1, so the
+     brand is a shade deeper; `brand-dark` is the hover and the small-text
+     orange. */
   --color-brand: #b8532a;
   --color-brand-dark: #93401f;
-  /* A MID-TONE, deliberately — not the mockup's pale #f6e3d8.
-     The shared components use `brand-soft` as a FOREGROUND (`text-brand-soft`)
-     and as a gradient stop behind white text, so a pale tint here renders
-     invisible type. The mockup's tint is `brand-tint` below, which is only ever
-     a background. Keeping the two apart is what lets a sibling component drop
-     in without being read line by line first. */
-  --color-brand-soft: #d9794b;
-  /* The pale wash: the h1 highlight underline and the bonus bar. Background
-     only — it has no contrast as a text colour and is not meant to. */
-  --color-brand-tint: #f6e3d8;
+  --color-brand-soft: #ff9e78;
+  --color-brand-tint: #fbe9e0;
   --color-brand-ink: #ffffff;
 
-  /* Ink navy again, as the SECONDARY action colour: the active filter pill, the
-     bonus-type icon tiles, the dark banner. The siblings put a second hue here;
-     this design deliberately spends its one bold colour on `brand` alone and
-     lets structure carry the rest, so `accent` resolves to the same ink as the
-     type. `accent-ink` is what goes on top of it.
-
-     It is also the focus-ring colour (`outline-accent`), which is why it must
-     stay dark: a ring in the pale tint would be invisible on this ground. */
+  /* Navy is the accent: the monitor panels, the selected chip, the footer. */
   --color-accent: #1a1d33;
-  --color-accent-dark: #2a2e4a;
+  --color-accent-dark: #232745;
   --color-accent-ink: #ffffff;
 
-  --color-line: #e2dbd0;
-  --color-line-soft: #cfc5b6;
+  --color-line: #e2dcd1;
+  --color-line-soft: #cfc7b9;
 
-  /* ── The night sub-palette ────────────────────────────────────────────────
-     The footer is the one inverted region of this site, and it needs a full
-     set of its own: `ink-soft` and `muted` are tuned for contrast against
-     CREAM, and both fail against the ink ground the footer sits on.
+  /* The navy ramp — monitor panels and the footer. */
+  --color-navy: #1a1d33;
+  --color-navy-2: #232745;
+  --color-night-ink: #c9cce0;
+  --color-night-muted: #a3a7c2;
+  --color-night-faint: #a3a7c2;
+  --color-night-line: #363b60;
+  --color-night-accent: #ff9e78;
 
-     Named `night-*` rather than reusing the main ramp so it is obvious at the
-     call site which ground a colour belongs to — the bug this prevents is a
-     `text-muted` that looks deliberate and is simply unreadable down there.
-     `night-accent` is the pale terracotta the mockup uses for footer headings
-     and the 18+ mark: the brand colour does not have the contrast for small
-     text on ink, and this is the same hue lifted until it does. */
-  --color-night-ink: #c9cbda;
-  --color-night-muted: #9a9db5;
-  --color-night-faint: #7e819c;
-  --color-night-line: #2e3250;
-  --color-night-accent: #f0b89c;
-
-  /* Star gold. Amber rather than yellow so a filled star still reads as a mark
-     at 14px on white. */
-  --color-gold: #e3a21a;
-  /* Pine, for the factual chips (accepted regions, bonus terms). A genuinely
-     separate signal from `brand`: terracotta is "this is the offer", pine is
-     "this is verified fact". */
-  --color-win: #2f6b4f;
-  --color-win-bg: #e4efe8;
+  /* Stars. */
+  --color-gold: #e0a11b;
+  /* The signal green: live dots and the factual region chips. */
+  --color-win: #1c7a57;
+  --color-win-bg: #e2f4ec;
+  --color-signal: #2ba67a;
 
   --font-sans: var(--font-instrument);
-  --font-display: var(--font-bricolage);
-  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-space);
+  --font-mono: var(--font-jetbrains);
 
-  /* 18px panels, 12px controls — the mockup's geometry. Pills go fully round
-     (999px) on top of this. */
-  --radius-bp: 18px;
+  --radius-ss: 18px;
 }
 
 body {
@@ -115,56 +83,215 @@ body {
 }
 
 .font-display {
-  font-family: var(--font-bricolage), system-ui, sans-serif;
+  font-family: var(--font-space), system-ui, sans-serif;
   letter-spacing: -0.02em;
 }
 
-/* ── The pulse ──────────────────────────────────────────────────────────────
-   The eyebrow's heartbeat dot — the one piece of motion on the site, and the
-   thing the brand is named after. An expanding ring rather than a pulsing
-   opacity, so it reads as a beat spreading out rather than as a blink.
+:focus-visible {
+  outline-color: var(--color-brand);
+}
 
-   `prefers-reduced-motion` stops it dead and leaves the dot itself in place:
-   the dot is a visual element, the animation is decoration, and only the
-   decoration is negotiable. */
+/* ── The live dot ───────────────────────────────────────────────────────────
+   A green dot with an expanding ring before a "live" label — the one piece of
+   looping motion besides the monitor trace, and both stop under
+   prefers-reduced-motion. */
+.live::before {
+  content: '';
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-signal);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .live::before {
+    animation: bp-beat 1.6s ease-out infinite;
+  }
+}
 @keyframes bp-beat {
   0% {
-    box-shadow: 0 0 0 0 rgba(184, 83, 42, 0.55);
+    box-shadow: 0 0 0 0 rgba(43, 166, 122, 0.55);
   }
   70% {
-    box-shadow: 0 0 0 10px rgba(184, 83, 42, 0);
+    box-shadow: 0 0 0 9px rgba(43, 166, 122, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(184, 83, 42, 0);
+    box-shadow: 0 0 0 0 rgba(43, 166, 122, 0);
   }
 }
-.pulse-dot {
-  animation: bp-beat 1.6s infinite;
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+.btn-or,
+.btn-ln {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 10px;
+  border: 1.5px solid transparent;
+  font-weight: 600;
+  text-align: center;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
+.btn-or {
+  background: var(--color-brand);
+  color: #fff;
+}
+.btn-or:hover {
+  background: var(--color-brand-dark);
+  color: #fff;
+}
+.btn-ln {
+  border-color: var(--color-line-soft);
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+.btn-ln:hover {
+  border-color: var(--color-ink);
+  color: var(--color-ink);
+}
+
+/* ── The monitor: a navy panel on a navy grid, with the ECG trace ───────── */
+.ecg-grid {
+  background-color: var(--color-navy-2);
+  background-image:
+    linear-gradient(var(--color-night-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-night-line) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.ecg-trace {
+  fill: none;
+  stroke: #ff7a45;
+  stroke-width: 3;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ecg-trace {
+    stroke-dasharray: 1400;
+    stroke-dashoffset: 1400;
+    animation: bp-draw 3.2s linear infinite;
+  }
+}
+@keyframes bp-draw {
+  70% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.2;
+  }
+}
+
+/* ── Ranking rows: lift, orange edge, and the pulse mark lights up ─────── */
+.rw {
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.rw:hover,
+.rw:focus-within {
+  border-color: var(--color-brand);
+  box-shadow: 0 14px 30px -18px rgba(184, 83, 42, 0.6);
+  transform: translateY(-2px);
+}
+.rw .spark {
+  stroke: var(--color-line-soft);
+  transition: stroke 0.2s;
+}
+.rw:hover .spark,
+.rw:focus-within .spark {
+  stroke: var(--color-brand);
+}
+
+/* ── Bonus mix bar segments ────────────────────────────────────────────── */
+.seg {
+  transition: filter 0.2s, transform 0.2s;
+}
+.seg:hover {
+  filter: brightness(1.1);
+  transform: translateY(-3px);
+}
+
+/* ── Offer rows inside a group card ────────────────────────────────────── */
+.of {
+  transition: background-color 0.2s;
+}
+.of:hover,
+.of:focus-within {
+  background-color: var(--color-brand-tint);
+}
+
+/* ── Method cycle: the arrow between stages (→ wide, ↓ stacked) ─────────── */
+.cy:not(:last-child)::after {
+  content: '↓';
+  position: absolute;
+  left: 30px;
+  bottom: -27px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-brand);
+}
+@media (min-width: 980px) {
+  .cy:not(:last-child)::after {
+    content: '→';
+    left: auto;
+    right: -31px;
+    bottom: auto;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+.loop-line {
+  background: repeating-linear-gradient(90deg, var(--color-brand) 0 8px, transparent 8px 14px);
+}
+
+/* ── FAQ accordion: a plus that turns into a minus on an orange disc ───── */
+.faq summary {
+  list-style: none;
+}
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+.faq-pm::before,
+.faq-pm::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 2px;
+  background: var(--color-ink);
+  transform: translate(-50%, -50%);
+  transition: transform 0.2s;
+}
+.faq-pm::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+.faq details[open] .faq-pm {
+  background: var(--color-brand);
+  border-color: var(--color-brand);
+}
+.faq details[open] .faq-pm::before,
+.faq details[open] .faq-pm::after {
+  background: #fff;
+}
+.faq details[open] .faq-pm::after {
+  transform: translate(-50%, -50%) rotate(0);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .pulse-dot {
-    animation: none;
+  .rw,
+  .rw .spark,
+  .seg,
+  .of,
+  .faq-pm::before,
+  .faq-pm::after {
+    transition: none;
   }
-}
-
-/* The hero ground: a wash of warm light from the top, kept very low so the
-   headline stays the brightest thing in the band. Two radial gradients rather
-   than an image — no request, and it scales to any viewport. */
-.hero-wash {
-  background:
-    radial-gradient(60% 80% at 50% 0%, rgba(184, 83, 42, 0.1), transparent 70%),
-    radial-gradient(40% 60% at 100% 10%, rgba(227, 162, 26, 0.09), transparent 70%),
-    var(--color-cream);
-}
-
-/* The ECG trace behind the hero headline — the mockup's `.hero-pulse`.
-   A repeating SVG stroke, inlined as a data URI so it costs no request, at the
-   opacity the mockup uses. Decorative: it carries no information and is hidden
-   from assistive tech by the element that uses it. */
-.pulse-trace {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='80' viewBox='0 0 240 80'%3E%3Cpath d='M0 40h40l10-26 16 52 14-40 8 14h30l10-26 16 52 14-40 8 14h34l10-26 16 52' fill='none' stroke='%231a1d33' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: repeat-x;
-  background-position: center;
+  .rw:hover,
+  .rw:focus-within,
+  .seg:hover {
+    transform: none;
+  }
 }
 
 /* ── Responsive safety net (all phones / tablets / laptops / large screens) ── */
@@ -246,7 +373,7 @@ body {
 }
 .prose :where(h1, h2, h3, h4, h5, h6) {
   color: var(--color-ink);
-  font-family: var(--font-bricolage), system-ui, sans-serif;
+  font-family: var(--font-space), system-ui, sans-serif;
   letter-spacing: -0.02em;
 }
 .prose :where(strong, b, th, dt) {
