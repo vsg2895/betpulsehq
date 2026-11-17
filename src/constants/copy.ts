@@ -187,7 +187,7 @@ export const COPY = {
   newsletter: {
     title: 'Feel the pulse every Monday.',
     subtitle: 'The week’s movements, the bonuses that changed, and anything that came off the board.',
-    placeholder: 'Email address',
+    placeholder: 'Email when bonus terms change',
     button: 'Subscribe',
     // Shown while the address is being checked. The subscribe request waits on
     // a live address-validation call, so the button has to say so rather than
@@ -238,6 +238,9 @@ export const COPY = {
     ratingLabel: 'Rating',
     titleLabel: 'Headline (optional)',
     bodyLabel: 'Your report',
+    namePlaceholder: 'First name or nickname',
+    emailPlaceholder: 'you@example.com',
+    titlePlaceholder: 'One line on how the terms read',
     bodyPlaceholder: 'How did it actually go — payouts, verification, support?',
     submit: 'Post Report',
     // Two outcomes, because the site can run pre- or post-moderation

@@ -44,6 +44,12 @@ export const CASINO_LIST = 'flex flex-col gap-3'
  * the actions take a full-width row of their own); two on a phone, where the
  * bonus also gets a row of its own.
  *
+ * The logo track is a FIXED width at every breakpoint, never `auto`: operator
+ * artwork ranges from square to wide banner, and an `auto` track sized itself
+ * to each image — one row rendered an 84px logo and the next 173px, which
+ * squeezed that row's name into 139px on a phone. object-contain letterboxes
+ * the artwork inside the fixed plate.
+ *
  * The pulse mark is the brand's ECG motif, identical on every row and hidden
  * from assistive tech — decoration, NOT a chart of anything about the casino.
  *
@@ -66,7 +72,7 @@ export default function CasinoCard({
   const extraRegions = regions.length - shownRegions.length
 
   return (
-    <li className="rw grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3.5 gap-y-3 rounded-[18px] border-[1.5px] border-line bg-paper p-3.5 sm:grid-cols-[96px_minmax(0,1fr)_minmax(0,1fr)] sm:gap-[18px] sm:px-[18px] min-[68.75rem]:grid-cols-[104px_minmax(0,1fr)_150px_minmax(0,1fr)_220px]">
+    <li className="rw grid grid-cols-[96px_minmax(0,1fr)] items-center gap-x-3.5 gap-y-3 rounded-[18px] border-[1.5px] border-line bg-paper p-3.5 sm:grid-cols-[96px_minmax(0,1fr)_minmax(0,1fr)] sm:gap-[18px] sm:px-[18px] min-[68.75rem]:grid-cols-[104px_minmax(0,1fr)_150px_minmax(0,1fr)_220px]">
       {/* The logo plate. WHITE: operator logos arrive with their own white
           ground baked in. The image fills the plate (contained), so a small
           logo file is never drawn smaller than its box. With no artwork the
